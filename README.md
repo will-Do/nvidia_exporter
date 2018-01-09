@@ -10,7 +10,22 @@
 
 ## Usage
 
-    $ ./nvidia_exporter [flags]
+  - By binary
+
+        $ ./nvidia_exporter [flags]`
+
+  - By Docker
+
+        $ docker build -t nvidia-exporter:v1.0.2
+        $ docker run --rm -v /var/lib/nvidia-docker/volumes/nvidia_driver/current/lib64:/usr/local/nvidia/lib64 --device /dev/nvidia0:/dev/nvidia0 --device /dev/nvidia1:/dev/nvidia1 --device /dev/nvidiactl:/dev/nvidiactl --device /dev/nvidia-uvm:/dev/nvidia-uvm nvidia-exporter:v1.0.2
+
+  - By kubernetes
+
+        $ #Please prepare the docker image
+        $ #And update the nvidia-exporter-ds.yaml according to your environment
+        $ cd kubernetes
+        $ kubectl apply -f nvidia-exporter-ds.yaml
+        $ kubectl apply -f nvidia-exporter-svc.yaml
 
 ### Flags
 
