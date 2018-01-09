@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    prometheus.io/scrape: 'true'
+  name: nvidia-exporter
+  namespace: monitoring
+  labels:
+    app: nvidia-exporter
+spec:
+  ports:
+  - name: nvidia-exporter
+    port: 9114
+    protocol: TCP
+    targetPort: 9114
+  selector:
+    app: nvidia-exporter

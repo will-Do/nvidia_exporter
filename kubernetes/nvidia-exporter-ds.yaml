@@ -1,0 +1,69 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: nvidia-exporter
+  namespace: monitoring
+spec:
+  template:
+    metadata:
+      labels:
+        app: nvidia-exporter
+    spec:
+      nodeSelector:
+        alpha.kubernetes.io/nvidia-gpu-num: "4"
+      hostNetwork: true
+      containers:
+        - name: nvidia-exporter
+          image: xx/xx/nvidia_exporter:v1.0.2
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: tz-config
+              mountPath: /etc/localtime
+            - name: lib64
+              mountPath: /usr/local/nvidia/lib64
+            - name: gpu0
+              mountPath: /dev/nvidia0
+            - name: gpu1
+              mountPath: /dev/nvidia1
+            - name: gpu2
+              mountPath: /dev/nvidia2
+            - name: gpu3
+              mountPath: /dev/nvidia3
+            - name: nvidia-uvm
+              mountPath: /dev/nvidia-uvm
+            - name: nvidiactl
+              mountPath: /dev/nvidiactl
+          securityContext:
+            privileged: true
+      volumes:
+        - name: tz-config
+          hostPath:
+            path: /usr/share/zoneinfo/Asia/Shanghai
+        - name: lib64
+          hostPath:
+            path: /var/lib/nvidia-docker/volumes/nvidia_driver/384.90/lib64
+            type: Directory
+        - name: gpu0
+          hostPath:
+            path: /dev/nvidia0
+            type: CharDevice
+        - name: gpu1
+          hostPath:
+            path: /dev/nvidia1
+            type: CharDevice
+        - name: gpu2
+          hostPath:
+            path: /dev/nvidia2
+            type: CharDevice
+        - name: gpu3
+          hostPath:
+            path: /dev/nvidia3
+            type: CharDevice
+        - name: nvidiactl
+          hostPath:
+            path: /dev/nvidiactl
+            type: CharDevice
+        - name: nvidia-uvm
+          hostPath:
+            path: /dev/nvidia-uvm
+            type: CharDevice
